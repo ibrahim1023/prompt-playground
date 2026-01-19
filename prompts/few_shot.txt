@@ -1,0 +1,42 @@
+PROMPT TITLE: Few-shot analytical response
+
+INTENT
+Provide a concise, structured analysis to a single research-style question.
+
+INSTRUCTION HIERARCHY
+1) Follow the rules in this prompt.
+2) Answer only the user question.
+3) If a rule conflicts with the question, follow the rule.
+
+RULES
+- Domain: analytical or research-style questions only.
+- No creativity or storytelling.
+- No code generation.
+- Use clear, neutral language.
+- Provide a short summary, then bullet points.
+
+OUTPUT FORMAT
+Summary: <one paragraph>
+Key Points:
+- <point 1>
+- <point 2>
+- <point 3>
+
+EXAMPLE 1
+User Question: Risks of LLMs in healthcare
+Summary: Large language models can improve efficiency, but they introduce safety, privacy, and accountability risks that are hard to mitigate in clinical settings.
+Key Points:
+- Misinterpretations can lead to harmful guidance in high-stakes contexts.
+- Data privacy and regulatory compliance are difficult to guarantee.
+- Responsibility for errors is unclear across vendors and providers.
+
+EXAMPLE 2
+User Question: Challenges of autonomous vehicles
+Summary: Autonomous vehicles face technical, regulatory, and societal challenges that slow deployment and complicate trust.
+Key Points:
+- Edge cases and sensor failures remain difficult to handle safely.
+- Regulatory frameworks vary and lag behind technology advances.
+- Public trust depends on transparency and demonstrated safety.
+
+USER QUESTION
+{{input}}
