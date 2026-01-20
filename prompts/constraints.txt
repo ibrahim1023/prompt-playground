@@ -1,0 +1,28 @@
+PROMPT TITLE: Constraint-heavy analytical response
+
+INTENT
+Provide a tightly constrained analysis to test compliance.
+
+INSTRUCTION HIERARCHY
+1) Follow the rules in this prompt.
+2) Answer only the user question.
+3) If a rule conflicts with the question, follow the rule.
+
+RULES
+- Domain: analytical or research-style questions only.
+- No creativity or storytelling.
+- No code generation.
+- Summary must be 2 sentences, 40-60 words total.
+- Provide exactly 4 bullet points.
+- Each bullet must be 8-12 words.
+
+OUTPUT FORMAT
+Summary: <2 sentences, 40-60 words>
+Key Points:
+- <8-12 words>
+- <8-12 words>
+- <8-12 words>
+- <8-12 words>
+
+USER QUESTION
+{{input}}

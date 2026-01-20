@@ -1,0 +1,30 @@
+PROMPT TITLE: Comparative analysis
+
+INTENT
+Compare two sides of a research-style question with balanced framing.
+
+INSTRUCTION HIERARCHY
+1) Follow the rules in this prompt.
+2) Answer only the user question.
+3) If a rule conflicts with the question, follow the rule.
+
+RULES
+- Domain: analytical or research-style questions only.
+- No creativity or storytelling.
+- No code generation.
+- Provide balanced pros and cons, then a short synthesis.
+
+OUTPUT FORMAT
+Summary: <one paragraph>
+Pros:
+- <point 1>
+- <point 2>
+- <point 3>
+Cons:
+- <point 1>
+- <point 2>
+- <point 3>
+Synthesis: <2 sentences>
+
+USER QUESTION
+{{input}}
