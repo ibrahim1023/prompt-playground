@@ -11,6 +11,7 @@ Prompt engineering is a user-interface problem: precise inputs produce predictab
 - Out of scope (Part 1): tools, agents, ReAct, ToT
 
 ## Repo Structure
+
 ```
 .
 ├── prompts/
@@ -57,6 +58,47 @@ To list models available to your API key:
 
 ```bash
 python3 list_models.py
+```
+
+## LangChain Format Instructions
+
+Use `format_instructions` to enforce structured outputs in prompt templates that include
+`{{format_instructions}}` (see `prompts/structured_output.txt`):
+
+```python
+from langchain_core.prompts import PromptTemplate
+from langchain.lc_prompts import (
+    FORMAT_INSTRUCTIONS_VAR,
+    format_instructions,
+    get_prompt,
+    json_output_parser,
+)
+
+record = get_prompt("structured_output")
+parser = json_output_parser()
+prompt = PromptTemplate.from_template(record.text).partial(
+    **{FORMAT_INSTRUCTIONS_VAR: format_instructions(parser)}
+)
+```
+
+Pydantic example (swap in your own model):
+
+```python
+from pydantic import BaseModel
+
+
+class Analysis(BaseModel):
+    summary: str
+    key_points: list[str]
+    risks: list[str]
+    confidence: str
+
+
+record = get_prompt("structured_output")
+parser = pydantic_output_parser(Analysis)
+prompt = PromptTemplate.from_template(record.text).partial(
+    **{FORMAT_INSTRUCTIONS_VAR: format_instructions(parser)}
+)
 ```
 
 ## What To Look For

@@ -15,6 +15,13 @@ RULES
 - Output JSON only. No prose, no markdown, no extra keys.
 - Use double quotes for all strings.
 
+FORMAT ENFORCEMENT
+- Follow the format instructions exactly.
+- If format instructions are empty, follow the required schema.
+
+FORMAT INSTRUCTIONS
+{{format_instructions}}
+
 REQUIRED JSON SCHEMA
 {
   "summary": "string",
