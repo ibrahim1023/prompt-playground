@@ -7,7 +7,7 @@ from typing import Iterable
 
 
 PROMPT_TITLE_RE = re.compile(r"^PROMPT TITLE:\s*(.+)$", re.MULTILINE)
-TEMPLATE_VAR_RE = re.compile(r"{{\s*([a-zA-Z0-9_]+)\s*}}")
+TEMPLATE_VAR_RE = re.compile(r"(?<!{){\s*([a-zA-Z0-9_]+)\s*}(?!})")
 
 
 @dataclass(frozen=True)

@@ -1,5 +1,10 @@
 results/
-.env
 skills/
-AGENTS.md
 .vscode/
+
+.env
+AGENTS.md
+
+langchain/__pycache__/
+langchain/lc_prompts/__pycache__/
+tests/__pycache__/

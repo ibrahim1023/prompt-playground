@@ -20,15 +20,15 @@ FORMAT ENFORCEMENT
 - If format instructions are empty, follow the required schema.
 
 FORMAT INSTRUCTIONS
-{format_instructions}
+
 
 REQUIRED JSON SCHEMA
-{{
+{
   "summary": "string",
   "key_points": ["string"],
   "risks": ["string"],
   "confidence": "low | medium | high"
-}}
+}
 
 USER QUESTION
-{input}
+Test question

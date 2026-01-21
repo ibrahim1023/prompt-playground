@@ -29,4 +29,4 @@ Key Points:
 - <point 3>
 
 USER QUESTION
-{{input}}
+{input}

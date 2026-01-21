@@ -39,4 +39,4 @@ Key Points:
 - Public trust depends on transparency and demonstrated safety.
 
 USER QUESTION
-{{input}}
+{input}

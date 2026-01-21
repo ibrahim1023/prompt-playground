@@ -10,8 +10,8 @@ def load_prompt(path: str) -> str:
 
 
 def build_prompt(template: str, user_input: str, format_instructions: str = "") -> str:
-    prompt = template.replace("{{input}}", user_input.strip())
-    return prompt.replace("{{format_instructions}}", format_instructions.strip())
+    prompt = template.replace("{input}", user_input.strip())
+    return prompt.replace("{format_instructions}", format_instructions.strip())
 
 
 def load_env_file(path: str = ".env") -> None:

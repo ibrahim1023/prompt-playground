@@ -25,4 +25,4 @@ Key Points:
 - <8-12 words>
 
 USER QUESTION
-{{input}}
+{input}

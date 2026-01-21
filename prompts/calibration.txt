@@ -25,4 +25,4 @@ Confidence: <low | medium | high>
 Confidence Rationale: <one sentence>
 
 USER QUESTION
-{{input}}
+{input}

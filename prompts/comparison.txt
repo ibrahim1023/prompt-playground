@@ -27,4 +27,4 @@ Cons:
 Synthesis: <2 sentences>
 
 USER QUESTION
-{{input}}
+{input}

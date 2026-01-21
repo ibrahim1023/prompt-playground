@@ -27,7 +27,7 @@ def _apply_format_instructions(
     instructions = _format_instructions_text(parser)
     if not instructions:
         return prompt
-    placeholder = f"{{{{{FORMAT_INSTRUCTIONS_VAR}}}}}"
+    placeholder = f"{{{FORMAT_INSTRUCTIONS_VAR}}}"
     if placeholder not in template_text:
         return prompt
     return prompt.partial(**{FORMAT_INSTRUCTIONS_VAR: instructions})

@@ -48,6 +48,17 @@ Prompt engineering is a user-interface problem: precise inputs produce predictab
    ```
 4. Outputs are saved in results/
 
+## Testing
+
+Run the lightweight test suite:
+
+```bash
+python3 -m unittest discover -s tests -p "test*.py"
+```
+
+If imports fail, make sure you run tests from the repo root so the local
+`langchain/` package is on `PYTHONPATH`.
+
 ## Dependencies
 
 - google-genai (see requirements.txt)
@@ -63,7 +74,8 @@ python3 list_models.py
 ## LangChain Format Instructions
 
 Use `format_instructions` to enforce structured outputs in prompt templates that include
-`{{format_instructions}}` (see `prompts/structured_output.txt`):
+`{format_instructions}` (see `prompts/structured_output.txt`). Templates use the default
+f-string format.
 
 ```python
 from langchain_core.prompts import PromptTemplate
@@ -122,7 +134,7 @@ from langchain.lc_prompts import planner_executor_chain
 chain = planner_executor_chain("planner_prompt", "executor_prompt", llm)
 ```
 
-RAG-ready chain (prompt must accept `{{context}}` and `{{input}}`, or pass custom
+RAG-ready chain (prompt must accept `{context}` and `{input}`, or pass custom
 keys when calling `rag_ready_chain`):
 
 ```python
