@@ -81,7 +81,7 @@ def main() -> int:
     output = call_model(prompt)
     print(output)
 
-    saved_path = save_output(prompt, output, "results")
+    saved_path = save_output(prompt, output, "results/output")
     print(f"\nSaved output to {saved_path}")
     return 0
 
