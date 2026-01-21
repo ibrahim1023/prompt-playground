@@ -62,6 +62,7 @@ If imports fail, make sure you run tests from the repo root so the local
 ## Dependencies
 
 - google-genai (see requirements.txt)
+- langchain (see requirements.txt)
 
 ## Model Discovery
 
