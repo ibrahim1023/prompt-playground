@@ -101,6 +101,52 @@ prompt = PromptTemplate.from_template(record.text).partial(
 )
 ```
 
+## LangChain Chains
+
+Basic chain usage:
+
+```python
+from langchain.lc_prompts import simple_chain, with_history_chain
+
+
+chain = simple_chain("zero_shot", llm)
+history_chain = with_history_chain("zero_shot", llm)
+```
+
+Planner → executor composition:
+
+```python
+from langchain.lc_prompts import planner_executor_chain
+
+
+chain = planner_executor_chain("planner_prompt", "executor_prompt", llm)
+```
+
+RAG-ready chain (prompt must accept `{{context}}` and `{{input}}`, or pass custom
+keys when calling `rag_ready_chain`):
+
+```python
+from langchain.lc_prompts import rag_ready_chain
+
+
+chain = rag_ready_chain("rag_prompt", llm, retriever)
+```
+
+## Prompt Mapping
+
+Prompt-specific mappings are centralized in `langchain/lc_prompts/mappings.py` with
+categories and defaults:
+
+```python
+from langchain.lc_prompts import PROMPT_CATEGORIES, map_prompt
+
+
+chain = map_prompt("structured_output", llm)
+category = PROMPT_CATEGORIES["structured_output"]
+```
+
+Migration status lives in `prompt_migration.md`.
+
 ## What To Look For
 
 - Where structured output improves reliability
