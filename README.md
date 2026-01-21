@@ -159,6 +159,11 @@ category = PROMPT_CATEGORIES["structured_output"]
 
 Migration status lives in `prompt_migration.md`.
 
+## Docs
+
+- Mapping guide: `mapping-guide.md`
+- Contributing: `CONTRIBUTING.md`
+
 ## What To Look For
 
 - Where structured output improves reliability
