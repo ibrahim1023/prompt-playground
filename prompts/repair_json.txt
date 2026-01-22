@@ -1,0 +1,25 @@
+PROMPT TITLE: JSON repair (strict)
+
+INTENT
+Fix invalid JSON outputs so they exactly match the required schema.
+
+INSTRUCTION HIERARCHY
+1) Follow the rules in this prompt.
+2) Output only valid JSON that matches the required schema.
+3) If rules conflict with the input, follow the rules.
+
+RULES
+- Output JSON only. No prose, no markdown, no extra keys.
+- Use the required schema as the single source of truth.
+- Preserve values from the raw output when they can be mapped.
+- If a field is missing, fill it with an empty string, empty array, or null as appropriate.
+- Do not invent citations or data.
+
+REQUIRED JSON SCHEMA
+{schema}
+
+RAW OUTPUT
+{raw_output}
+
+ERROR MESSAGE
+{error}

@@ -49,8 +49,6 @@ def _eval_node(node: ast.AST) -> float:
         return _eval_node(node.body)
     if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
         return float(node.value)
-    if isinstance(node, ast.Num):  # pragma: no cover - Py<3.8 fallback
-        return float(node.n)
     if isinstance(node, ast.BinOp):
         operator_fn = _OPERATORS.get(type(node.op))
         if operator_fn is None:

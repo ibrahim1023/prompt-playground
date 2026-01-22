@@ -178,6 +178,44 @@ tools = get_tools()
 schemas = tool_specs()
 ```
 
+## Tools + Reliability
+
+The tool router (`prompts/router.txt`) and tool-aware answer prompt
+(`prompts/tool_answer.txt`) are paired with strict schemas and a retry flow.
+Use `src/schemas.py` for validation, `src/reliability/validate.py` for explicit
+JSON errors, and `src/reliability/retry.py` to repair invalid outputs.
+
+```python
+from src.reliability import RetryConfig, run_with_retries, validate_json
+from src.schemas import ToolAnswer
+
+
+def validator(text: str) -> ToolAnswer:
+    return validate_json(text, ToolAnswer)
+
+
+result = run_with_retries(
+    invoke=router_chain.invoke,
+    inputs={"input": "2 + 2"},
+    validator=validator,
+    repair_invoke=repair_chain.invoke,
+    config=RetryConfig(max_retries=2),
+    log_context={
+        "prompt": "tool_answer",
+        "prompt_version": "v1",
+        "model": "models/gemini-2.0-flash-001",
+        "temperature": 0.0,
+    },
+)
+```
+
+Failure modes:
+
+- Invalid JSON raises a `ValueError` with the exact parse failure.
+- Schema mismatches raise a `ValueError` with a Pydantic validation summary.
+- Exceeding retries raises the last validation error; logs still land in
+  `results/logs/` with the raw output and errors.
+
 ## Prompt Mapping
 
 Prompt-specific mappings are centralized in `langchain/lc_prompts/mappings.py` with
