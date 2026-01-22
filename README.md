@@ -51,6 +51,14 @@ Prompt engineering is a user-interface problem: precise inputs produce predictab
    ```
 4. Outputs are saved in results/output/
 
+## LangChain Runner
+
+Use the LangChain wrapper to run by prompt ID (reuses the same Gemini client):
+
+```bash
+python3 scripts/langchain_runner.py zero_shot "Risks of LLMs in healthcare"
+```
+
 ## Testing
 
 Run the lightweight test suite:

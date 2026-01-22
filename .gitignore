@@ -5,6 +5,7 @@ skills/
 .env
 AGENTS.md
 
+__pycache__/
 langchain/__pycache__/
 langchain/lc_prompts/__pycache__/
 tests/__pycache__/
