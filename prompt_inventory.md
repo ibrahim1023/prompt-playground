@@ -14,3 +14,5 @@ Source of truth: `prompts/`
 | refusal               | `prompts/refusal.txt`               |
 | calibration           | `prompts/calibration.txt`           |
 | comparison            | `prompts/comparison.txt`            |
+| router                | `prompts/router.txt`                |
+| tool_answer           | `prompts/tool_answer.txt`           |

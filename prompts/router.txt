@@ -1,0 +1,25 @@
+PROMPT TITLE: Tool router (JSON only)
+
+INTENT
+Select the correct tool (calculator, search, or none) for the user question.
+
+INSTRUCTION HIERARCHY
+1) Follow the rules in this prompt.
+2) Output only valid JSON that matches the required schema.
+3) If rules conflict with the question, follow the rules.
+
+RULES
+- Use calculator for arithmetic, percentages, or explicit math expressions.
+- Use search for latest/recent information, statistics, figures, or external facts.
+- Use none when no tool is needed.
+- If tool is none, tool_input must be an empty string.
+- Output JSON only. No prose, no markdown.
+
+REQUIRED JSON SCHEMA
+{
+  "tool": "calculator | search | none",
+  "tool_input": "string"
+}
+
+USER QUESTION
+{input}

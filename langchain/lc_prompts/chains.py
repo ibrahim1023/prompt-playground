@@ -1,16 +1,23 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+import json
 from typing import Any
 
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, PromptTemplate
 from langchain_core.runnables import Runnable, RunnableLambda, RunnablePassthrough
 
 from .loaders import load_prompt_by_id
-from .output_parsers import FORMAT_INSTRUCTIONS_VAR, format_instructions
+from .output_parsers import (
+    FORMAT_INSTRUCTIONS_VAR,
+    format_instructions,
+    json_output_parser,
+)
+from src.tools import calculator, mini_search
 
 
 HISTORY_VAR = "history"
+_TOOL_NAMES = {"calculator", "search", "none"}
 
 
 def _format_instructions_text(parser: Any | None) -> str | None:
@@ -122,3 +129,86 @@ def rag_ready_chain(
     if parser is not None:
         chain = chain | parser
     return chain
+
+
+def _normalize_router_output(route: Any) -> dict[str, str]:
+    if not isinstance(route, dict):
+        return {"tool": "none", "tool_input": ""}
+    tool = str(route.get("tool", "none")).strip().lower()
+    if tool not in _TOOL_NAMES:
+        tool = "none"
+    tool_input = route.get("tool_input", "")
+    if not isinstance(tool_input, str):
+        tool_input = str(tool_input)
+    if tool == "none":
+        tool_input = ""
+    return {"tool": tool, "tool_input": tool_input}
+
+
+def _run_tool(route: dict[str, str]) -> dict[str, Any]:
+    tool = route["tool"]
+    tool_input = route["tool_input"]
+    if tool == "calculator":
+        try:
+            result = calculator.calculate(tool_input)
+            tool_results: dict[str, Any] = {"result": result}
+        except ValueError as exc:
+            tool_results = {"error": str(exc)}
+        return {"tool_used": tool, "tool_results": tool_results, "citations": []}
+    if tool == "search":
+        results = mini_search.mini_search(tool_input)
+        citations = [
+            {"source": item["source"], "snippet": item["snippet"]}
+            for item in results
+        ]
+        return {
+            "tool_used": tool,
+            "tool_results": {"results": results},
+            "citations": citations,
+        }
+    return {"tool_used": "none", "tool_results": None, "citations": []}
+
+
+def tool_aware_chain(
+    router_id: str,
+    answer_id: str,
+    llm: Runnable,
+    *,
+    router_parser: Any | None = None,
+    answer_parser: Any | None = None,
+    prompts_dir: str | None = None,
+) -> Runnable:
+    chosen_router_parser = router_parser or json_output_parser()
+    chosen_answer_parser = answer_parser or json_output_parser()
+    router = simple_chain(
+        router_id,
+        llm,
+        parser=chosen_router_parser,
+        prompts_dir=prompts_dir,
+    )
+    answer = simple_chain(
+        answer_id,
+        llm,
+        parser=chosen_answer_parser,
+        prompts_dir=prompts_dir,
+    )
+
+    def run_with_tools(inputs: dict[str, Any]) -> Any:
+        route_output = router.invoke(inputs)
+        route = _normalize_router_output(route_output)
+        tool_payload = _run_tool(route)
+        answer_inputs = dict(inputs)
+        answer_inputs.update(
+            {
+                "tool_used": tool_payload["tool_used"],
+                "tool_results": json.dumps(
+                    tool_payload["tool_results"], ensure_ascii=True
+                ),
+                "citations": json.dumps(
+                    tool_payload["citations"], ensure_ascii=True
+                ),
+            }
+        )
+        return answer.invoke(answer_inputs)
+
+    return RunnableLambda(run_with_tools)

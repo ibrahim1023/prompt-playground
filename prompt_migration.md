@@ -12,3 +12,5 @@
 | instruction_hierarchy | single_turn_text  | y      | n     | refusal format branch       |
 | refusal               | single_turn_text  | y      | n     | refusal format branch       |
 | structured_output     | structured_json   | y      | n     | JSON output parser default  |
+| router                | router_json       | n      | n     | tool routing decisions      |
+| tool_answer           | tool_aware_json   | n      | n     | tool-aware output schema    |

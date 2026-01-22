@@ -8,7 +8,7 @@ Prompt engineering is a user-interface problem: precise inputs produce predictab
 
 - Domain: analytical / research-style questions only
 - Techniques: zero-shot, few-shot, role prompting, chain-of-thought, structured output, instruction hierarchy
-- Out of scope (Part 1): tools, agents, ReAct, ToT
+- Out of scope (Part 1): agents, ReAct, ToT
 
 ## Repo Structure
 
@@ -25,8 +25,11 @@ Prompt engineering is a user-interface problem: precise inputs produce predictab
 │   ├── refusal.txt              # scope refusal behavior
 │   ├── ambiguity.txt            # clarification vs answer behavior
 │   ├── calibration.txt          # confidence + rationale
-│   └── comparison.txt           # balanced pros/cons format
+│   ├── comparison.txt           # balanced pros/cons format
+│   ├── router.txt               # JSON-only tool routing
+│   └── tool_answer.txt          # tool-aware JSON response
 ├── results/
+│   └── output/                # Runner outputs
 │   └── comparisons.md           # manual prompt comparisons
 ├── runner.py                    # minimal runner
 ├── list_models.py               # list available models for key
@@ -46,7 +49,7 @@ Prompt engineering is a user-interface problem: precise inputs produce predictab
    ```bash
    python3 runner.py prompts/zero_shot.txt "Risks of LLMs in healthcare"
    ```
-4. Outputs are saved in results/
+4. Outputs are saved in results/output/
 
 ## Testing
 
@@ -143,6 +146,36 @@ from langchain.lc_prompts import rag_ready_chain
 
 
 chain = rag_ready_chain("rag_prompt", llm, retriever)
+```
+
+Tool-aware routing chain:
+
+```python
+from langchain.lc_prompts import json_output_parser, tool_aware_chain
+
+
+router_parser = json_output_parser()
+answer_parser = json_output_parser()
+chain = tool_aware_chain(
+    "router",
+    "tool_answer",
+    llm,
+    router_parser=router_parser,
+    answer_parser=answer_parser,
+)
+```
+
+## Tools
+
+Deterministic tools live in `src/tools/` and include a calculator and a stub
+search utility. Use `src/tools/registry.py` to retrieve LangChain Tool objects
+or read the tool schemas for routing decisions.
+
+```python
+from src.tools import get_tools, tool_specs
+
+tools = get_tools()
+schemas = tool_specs()
 ```
 
 ## Prompt Mapping

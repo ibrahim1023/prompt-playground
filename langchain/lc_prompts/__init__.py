@@ -10,6 +10,7 @@ from .chains import (
     planner_executor_chain,
     rag_ready_chain,
     simple_chain,
+    tool_aware_chain,
     with_history_chain,
 )
 from .mappings import PROMPT_CATEGORIES, PROMPT_MAPPERS, map_prompt
@@ -29,6 +30,7 @@ __all__ = [
     "with_history_chain",
     "planner_executor_chain",
     "rag_ready_chain",
+    "tool_aware_chain",
     "PROMPT_CATEGORIES",
     "PROMPT_MAPPERS",
     "map_prompt",

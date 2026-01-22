@@ -19,6 +19,8 @@ PROMPT_CATEGORIES: dict[str, str] = {
     "instruction_hierarchy": "single_turn_text",
     "refusal": "single_turn_text",
     "structured_output": "structured_json",
+    "router": "router_json",
+    "tool_answer": "tool_aware_json",
 }
 
 
@@ -75,6 +77,31 @@ def map_structured_output(
     )
 
 
+def map_router(
+    llm: Runnable,
+    *,
+    prompts_dir: str | None = None,
+    parser: Any | None = None,
+) -> Runnable:
+    chosen_parser = parser or json_output_parser()
+    return simple_chain("router", llm, parser=chosen_parser, prompts_dir=prompts_dir)
+
+
+def map_tool_answer(
+    llm: Runnable,
+    *,
+    prompts_dir: str | None = None,
+    parser: Any | None = None,
+) -> Runnable:
+    chosen_parser = parser or json_output_parser()
+    return simple_chain(
+        "tool_answer",
+        llm,
+        parser=chosen_parser,
+        prompts_dir=prompts_dir,
+    )
+
+
 PROMPT_MAPPERS: dict[str, Any] = {
     "zero_shot": map_zero_shot,
     "few_shot": map_few_shot,
@@ -86,6 +113,8 @@ PROMPT_MAPPERS: dict[str, Any] = {
     "instruction_hierarchy": map_instruction_hierarchy,
     "refusal": map_refusal,
     "structured_output": map_structured_output,
+    "router": map_router,
+    "tool_answer": map_tool_answer,
 }
 
 
@@ -99,6 +128,6 @@ def map_prompt(
     if prompt_id not in PROMPT_MAPPERS:
         raise KeyError(f"Unknown prompt id: {prompt_id}")
     mapper = PROMPT_MAPPERS[prompt_id]
-    if prompt_id == "structured_output":
+    if prompt_id in {"structured_output", "router", "tool_answer"}:
         return mapper(llm, prompts_dir=prompts_dir, parser=parser)
     return mapper(llm, prompts_dir=prompts_dir)
